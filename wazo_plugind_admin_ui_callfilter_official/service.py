@@ -5,7 +5,7 @@ from wazo_admin_ui.helpers.confd import confd
 from wazo_admin_ui.helpers.service import BaseConfdService
 
 
-class CallfilterService(BaseConfdService):
+class CallFilterService(BaseConfdService):
     resource_confd = 'call_filters'
 
     def create(self, resource):

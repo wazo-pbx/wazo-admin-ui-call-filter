@@ -8,11 +8,11 @@ from flask_menu.classy import classy_menu_item
 from wazo_admin_ui.helpers.classful import BaseView, LoginRequiredView
 from wazo_admin_ui.helpers.classful import extract_select2_params, build_select2_response
 
-from .form import CallfilterForm
+from .form import CallFilterForm
 
 
-class CallfilterView(BaseView):
-    form = CallfilterForm
+class CallFilterView(BaseView):
+    form = CallFilterForm
     resource = 'callfilter'
 
     @classy_menu_item('.callfilters', l_('BS Filters'), order=8, icon='filter')
@@ -108,7 +108,7 @@ class CallfilterView(BaseView):
         return resource
 
 
-class CallfilterListingView(LoginRequiredView):
+class CallFilterListingView(LoginRequiredView):
 
     def list_json(self):
         params = extract_select2_params(request.args)

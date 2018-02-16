@@ -8,7 +8,7 @@
   <section class="content">
     {% call build_list_containers(_('BS Filters'), 'filter') %}
       {% call build_list_table() %}
-        {% call build_list_table_headers(get=url_for('.CallfilterView:get', id=''), delete=url_for('.CallfilterView:delete', id='')) %}
+        {% call build_list_table_headers(get=url_for('.CallFilterView:get', id=''), delete=url_for('.CallFilterView:delete', id='')) %}
           <th>{{ _('Name') }}</th>
           <th>{{ _('Strategy') }}</th>
           <th>{{ _('Recipient') }}</th>
@@ -27,7 +27,7 @@
       {% endcall %}
     {% endcall %}
 
-    {% call build_hidden_add_containers(_('Add Callfilter')) %}
+    {% call build_hidden_add_containers(_('Add BS Filter')) %}
       {% call build_form() %}
         {% call add_default_fields(form=form, submit_value=_('Add')) %}
           {{ render_field(form.name) }}

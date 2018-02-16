@@ -43,7 +43,7 @@ class UserSurrogatesForm(BaseForm):
     users = FieldList(FormField(UserSurrogateForm), min_entries=1)
 
 
-class CallfilterForm(BaseForm):
+class CallFilterForm(BaseForm):
     name = StringField(l_('Name'), validators=[InputRequired()])
     strategy = SelectField(l_('Ring Strategy'), choices=[
         ('all-surrogates-then-all-recipients', l_('Only secretaries, simultaneously')),
@@ -73,9 +73,9 @@ class CallfilterForm(BaseForm):
     submit = SubmitField(l_('Submit'))
 
 
-class CallfilterDestinationForm(BaseForm):
+class CallFilterDestinationForm(BaseForm):
     set_value_template = '{callfilter_name}'
 
-    callfilter_id = SelectField(l_('Callfilter'), [InputRequired()], choices=[])
+    callfilter_id = SelectField(l_('CallFilter'), [InputRequired()], choices=[])
     callfilter_name = DestinationHiddenField()
     ring_time = IntegerField(l_('Ring Time'), [NumberRange(min=0)])

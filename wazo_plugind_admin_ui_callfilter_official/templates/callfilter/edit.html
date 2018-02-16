@@ -14,7 +14,7 @@
         {{ add_tab_navigation_item('no_answer', _('No Answer')) }}
       {% endcall %}
 
-      {% call build_form(action=url_for('.CallfilterView:put', id=resource.id)) %}
+      {% call build_form(action=url_for('.CallFilterView:put', id=resource.id)) %}
         {% call build_tabs_content() %}
 
           {% call build_tab_content_item('general', active=True) %}
