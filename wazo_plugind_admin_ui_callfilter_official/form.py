@@ -25,7 +25,7 @@ class FallbacksForm(BaseForm):
 class UserForm(BaseForm):
     uuid = HiddenField()
     firstname = HiddenField(l_('Firstname'))
-    lastname = HiddenField(l_('Firstname'))
+    lastname = HiddenField(l_('Lastname'))
 
 
 class UserRecipientsForm(UserForm):
@@ -46,11 +46,11 @@ class UserSurrogatesForm(BaseForm):
 class CallFilterForm(BaseForm):
     name = StringField(l_('Name'), validators=[InputRequired()])
     strategy = SelectField(l_('Ring Strategy'), choices=[
-        ('all-surrogates-then-all-recipients', l_('Only secretaries, simultaneously')),
-        ('linear-surrogates-then-all-recipients', l_('Only secretaries, serially')),
-        ('all-recipients-then-linear-surrogates', l_('Boss, then secretaries, serially')),
-        ('all-recipients-then-all-surrogates', l_('Boss, then secretaries, simultaneously')),
-        ('all', l_('Boss and secretaries, simultaneously'))
+        ('all-surrogates-then-all-recipients', l_('All secretaries, then boss')),
+        ('linear-surrogates-then-all-recipients', l_('Secretaries sequentially, then boss')),
+        ('all-recipients-then-linear-surrogates', l_('Boss, then secretaries sequentially')),
+        ('all-recipients-then-all-surrogates', l_('Boss, then all secretaries')),
+        ('all', l_('Boss and all secretaries'))
     ])
     caller_id_mode = SelectField(l_('Caller ID mode'), choices=[
         ('', l_('None')),
