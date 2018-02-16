@@ -20,21 +20,26 @@ class CallFilterView(BaseView):
         return super().index()
 
     def _map_resources_to_form(self, resource):
-        resource['surrogates_user'] = {}
-        resource['surrogates_user']['user_uuids'] = [user['uuid'] for user in resource['surrogates']['users']]
-        resource['surrogates_user']['users'] = self._build_surrogates_choices(resource['surrogates']['users'])
-        resource['recipients_user'] = resource['recipients']['users'][0]
-        resource['fallbacks'] = self._build_sound_choices(resource['fallbacks'])
-        form = self.form(data=resource)
+        surrogates_user = {}
+        surrogates_user['user_uuids'] = [user['uuid'] for user in resource['surrogates']['users']]
+        surrogates_user['users'] = self._build_surrogates_user(resource['surrogates']['users'])
+        recipients_user = self._build_recipients_user(resource['recipients']['users'])
+        fallbacks = self._build_sound(resource['fallbacks'])
+        form = self.form(
+            data=resource,
+            fallbacks=fallbacks,
+            surrogates_user=surrogates_user,
+            recipients_user=recipients_user,
+        )
         return form
 
-    def _build_surrogates_choices(self, surrogates_user):
+    def _build_surrogates_user(self, surrogates_user):
         for surrogate_user in surrogates_user:
             user = self.service.get_user_by_uuid(surrogate_user['uuid'])
             surrogate_user['id'] = user['id']
         return surrogates_user
 
-    def _build_sound_choices(self, fallbacks):
+    def _build_sound(self, fallbacks):
         if fallbacks['noanswer_destination']['type'] != 'sound':
             return
         file_, format_ = self.service.find_sound_by_path(fallbacks['noanswer_destination']['filename'])
@@ -43,6 +48,11 @@ class CallFilterView(BaseView):
             fallbacks['noanswer_destination']['format'] = format_['format']
             fallbacks['noanswer_destination']['language'] = format_['language']
         return fallbacks
+
+    def _build_recipients_user(self, recipients_user):
+        for user in recipients_user:
+            return user
+        return None
 
     def _populate_form(self, form):
         sounds = self.service.list_sound()
@@ -68,19 +78,11 @@ class CallFilterView(BaseView):
             bsfilter_extension = extension_features_bsfilter['exten'][1:-1]
         results = []
         for user in users:
-            if user.lastname.data:
-                text = '{} {} ({}{})'.format(
-                    user.firstname.data,
-                    user.lastname.data,
-                    bsfilter_extension,
-                    user['id'].data
-                )
-            else:
-                text = '{} ({}{})'.format(
-                    user.firstname.data,
-                    bsfilter_extension,
-                    user['id'].data
-                )
+            text = '{}{}{}'.format(
+                user.firstname.data,
+                ' {}'.format(user.lastname.data) if user.lastname.data else '',
+                ' ({}{})'.format(bsfilter_extension, user['id'].data) if bsfilter_extension else '',
+            )
             results.append((user.uuid.data, text))
         return results
 

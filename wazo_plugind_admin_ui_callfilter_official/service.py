@@ -11,28 +11,17 @@ class CallFilterService(BaseConfdService):
     def create(self, resource):
         callfilter_id = super().create(resource)['id']
         self.update_user_recipients(callfilter_id, resource['recipients_user'])
-        self.update_user_surrogates(callfilter_id, resource['surrogates_user'])
+        confd.call_filters(resource['id']).update_user_recipients(resource['recipients_user'])
+        confd.call_filters(resource['id']).update_user_surrogates(resource['surrogates_user'])
 
     def update(self, resource):
         super().update(resource)
-        self.update_user_recipients(resource['id'], resource['recipients_user'])
-        self.update_user_surrogates(resource['id'], resource['surrogates_user'])
-        self.update_fallbacks(resource['id'], resource['fallbacks'])
-
-    def update_user_recipients(self, callfilter_id, users):
-        return confd.call_filters(callfilter_id).update_user_recipients(users)
-
-    def update_user_surrogates(self, callfilter_id, users):
-        return confd.call_filters(callfilter_id).update_user_surrogates(users)
-
-    def update_fallbacks(self, callfilter_id, fallbacks):
-        return confd.call_filters(callfilter_id).update_fallbacks(fallbacks)
+        confd.call_filters(resource['id']).update_user_recipients(resource['recipients_user'])
+        confd.call_filters(resource['id']).update_user_surrogates(resource['surrogates_user'])
+        confd.call_filters(resource['id']).update_fallbacks(resource['fallbacks'])
 
     def list_sound(self):
         return confd.sounds.list()
-
-    def list_sound_filename(self, sound_name):
-        return confd.sounds.get(sound_name)
 
     def find_sound_by_path(self, sound_path):
         sounds = self.list_sound()['items']
