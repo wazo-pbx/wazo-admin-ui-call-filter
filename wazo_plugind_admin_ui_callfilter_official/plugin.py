@@ -8,7 +8,7 @@ from wazo_admin_ui.helpers.destination import register_listing_url, register_des
 
 from .form import CallFilterDestinationForm
 from .service import CallFilterService
-from .view import CallFilterView, CallFilterListingView
+from .view import CallFilterView, CallFilterListingView, CallFilterListingSurrogatesView
 
 callfilter = create_blueprint('callfilter', __name__)
 
@@ -25,8 +25,12 @@ class Plugin(object):
         CallFilterListingView.service = CallFilterService()
         CallFilterListingView.register(callfilter, route_base='/callfilters_listing')
 
+        CallFilterListingSurrogatesView.service = CallFilterService()
+        CallFilterListingSurrogatesView.register(callfilter, route_base='/callfilters_listing_surrogates')
+
         register_destination_form('callfilter', 'CallFilter', CallFilterDestinationForm)
 
         register_listing_url('callfilter', 'callfilter.CallFilterListingView:list_json')
+        register_listing_url('callfilter_surrogates', 'callfilter.CallFilterListingSurrogatesView:list_json')
 
         core.register_blueprint(callfilter)

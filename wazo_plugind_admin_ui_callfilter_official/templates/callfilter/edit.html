@@ -26,7 +26,7 @@
               {{ render_field(form.caller_id_name) }}
               {{ render_field(form.recipients_user.uuid, data_listing_href=url_for(listing_urls['uuid_user'])) }}
               {{ render_field(form.recipients_user.timeout) }}
-              {{ render_field(form.surrogates_user.user_uuids, data_listing_href=url_for(listing_urls['uuid_user'])) }}
+              {{ render_field(form.surrogates_user.user_uuids, data_listing_href=url_for(listing_urls['callfilter_surrogates'])) }}
               {{ render_field(form.surrogates_timeout) }}
               {{ render_field(form.description) }}
             {% endcall %}

@@ -61,7 +61,7 @@ class CallFilterView(BaseView):
         return surrogates_user
 
     def _build_sound(self, fallbacks):
-        if fallbacks['noanswer_destination']['type'] != 'sound':
+        if not fallbacks['noanswer_destination'] or fallbacks['noanswer_destination']['type'] != 'sound':
             return
         file_, format_ = self.service.find_sound_by_path(fallbacks['noanswer_destination']['filename'])
         if file_:
@@ -138,3 +138,25 @@ class CallFilterListingView(LoginRequiredView):
         callfilters = self.service.list(**params)
         results = [{'id': callfilter['id'], 'text': callfilter['name']} for callfilter in callfilters['items']]
         return jsonify(build_select2_response(results, callfilters['total'], params))
+
+
+class CallFilterListingSurrogatesView(LoginRequiredView):
+
+    def list_json(self):
+        params = extract_select2_params(request.args)
+        users = self.service.list_user(**params)
+        extension_features_bsfilter = self.service.get_extensions_features_by_type('bsfilter')
+        bsfilter_extension = None
+        if extension_features_bsfilter:
+            bsfilter_extension = extension_features_bsfilter['exten'][1:-1]
+        results = []
+        for user in users['items']:
+            text = '{}{}{}'.format(
+                user['firstname'],
+                ' {}'.format(user['firstname']) if user['lastname'] else '',
+                ' ({}{})'.format(bsfilter_extension, user['id']) if bsfilter_extension else '',
+            )
+
+            results.append({'id': user['uuid'], 'text': text})
+
+        return jsonify(build_select2_response(results, users['total'], params))

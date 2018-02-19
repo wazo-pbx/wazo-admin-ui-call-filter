@@ -41,5 +41,8 @@ class CallFilterService(BaseConfdService):
             if extension_feature['feature'] == extension_feature_type:
                 return extension_feature
 
+    def list_user(self, **kwargs):
+        return confd.users.list(**kwargs)
+
     def get_user_by_uuid(self, uuid):
         return confd.users.get(uuid)
