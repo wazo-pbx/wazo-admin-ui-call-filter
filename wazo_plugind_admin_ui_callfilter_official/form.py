@@ -27,7 +27,7 @@ bs_strategy_map = {
 
 
 class FallbacksForm(BaseForm):
-    noanswer_destination = DestinationField()
+    noanswer_destination = DestinationField(destination_label='')
 
 
 class UserForm(BaseForm):
