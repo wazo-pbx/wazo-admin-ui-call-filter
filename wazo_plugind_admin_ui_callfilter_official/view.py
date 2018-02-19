@@ -1,14 +1,22 @@
 # Copyright 2018 The Wazo Authors  (see the AUTHORS file)
 # SPDX-License-Identifier: GPL-3.0+
 
-from flask import jsonify, request
+from flask import (
+    jsonify,
+    redirect,
+    render_template,
+    request,
+    url_for,
+)
 from flask_babel import lazy_gettext as l_
 from flask_menu.classy import classy_menu_item
+from requests.exceptions import HTTPError
 
 from wazo_admin_ui.helpers.classful import BaseView, LoginRequiredView
 from wazo_admin_ui.helpers.classful import extract_select2_params, build_select2_response
+from wazo_admin_ui.helpers.destination import listing_urls
 
-from .form import CallFilterForm
+from .form import CallFilterForm, bs_strategy_map
 
 
 class CallFilterView(BaseView):
@@ -16,8 +24,21 @@ class CallFilterView(BaseView):
     resource = 'callfilter'
 
     @classy_menu_item('.callfilters', l_('BS Filters'), order=8, icon='filter')
-    def index(self):
-        return super().index()
+    def index(self, form=None):
+        try:
+            resource_list = self.service.list()
+        except HTTPError as error:
+            self._flash_http_error(error)
+            return redirect(url_for('admin.Admin:get'))
+
+        form = form or self.form()
+        form = self._populate_form(form)
+
+        return render_template(self._get_template('list'),
+                               form=form,
+                               resource_list=resource_list,
+                               listing_urls=listing_urls,
+                               bs_strategy_map=bs_strategy_map)
 
     def _map_resources_to_form(self, resource):
         surrogates_user = {}

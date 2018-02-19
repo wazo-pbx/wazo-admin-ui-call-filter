@@ -17,6 +17,14 @@ from wtforms.validators import InputRequired, NumberRange
 from wazo_admin_ui.helpers.destination import DestinationField, DestinationHiddenField
 from wazo_admin_ui.helpers.form import BaseForm, SelectField
 
+bs_strategy_map = {
+    'all-surrogates-then-all-recipients': l_('All secretaries, then boss'),
+    'linear-surrogates-then-all-recipients': l_('Secretaries sequentially, then boss'),
+    'all-recipients-then-linear-surrogates': l_('Boss, then secretaries sequentially'),
+    'all-recipients-then-all-surrogates': l_('Boss, then all secretaries'),
+    'all': l_('Boss and all secretaries')
+}
+
 
 class FallbacksForm(BaseForm):
     noanswer_destination = DestinationField()
@@ -45,13 +53,7 @@ class UserSurrogatesForm(BaseForm):
 
 class CallFilterForm(BaseForm):
     name = StringField(l_('Name'), validators=[InputRequired()])
-    strategy = SelectField(l_('Ring Strategy'), choices=[
-        ('all-surrogates-then-all-recipients', l_('All secretaries, then boss')),
-        ('linear-surrogates-then-all-recipients', l_('Secretaries sequentially, then boss')),
-        ('all-recipients-then-linear-surrogates', l_('Boss, then secretaries sequentially')),
-        ('all-recipients-then-all-surrogates', l_('Boss, then all secretaries')),
-        ('all', l_('Boss and all secretaries'))
-    ])
+    strategy = SelectField(l_('Ring Strategy'), choices=[(k, v) for k, v in bs_strategy_map.items()])
     caller_id_mode = SelectField(l_('Caller ID mode'), choices=[
         ('', l_('None')),
         ('prepend', l_('Prepend')),
