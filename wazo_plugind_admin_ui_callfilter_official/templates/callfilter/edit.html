@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 
 {% block content_header %}
-  {{ build_breadcrumb(_('BS Flters'), '', 'filter', [_('Edit'), resource.id]) }}
+  {{ build_breadcrumb(_('Boss Secretaries Filter'), '', 'filter', [_('Edit'), resource.id]) }}
 {% endblock %}
 
 {% block content %}
@@ -9,7 +9,7 @@
     {% call build_form_tabs_box() %}
 
       {% call build_tabs_navigation() %}
-        {{ add_tab_navigation_header(_('BS Filter'), resource.name, 'filter') }}
+        {{ add_tab_navigation_header('', resource.name, 'filter') }}
         {{ add_tab_navigation_item('general', _('General'), active=True) }}
         {{ add_tab_navigation_item('no_answer', _('No Answer')) }}
       {% endcall %}

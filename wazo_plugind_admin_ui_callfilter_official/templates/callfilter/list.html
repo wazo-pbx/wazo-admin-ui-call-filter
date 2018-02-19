@@ -1,18 +1,18 @@
 {% extends "layout.html" %}
 
 {% block content_header %}
-  {{ build_breadcrumb(_('BS Filters'), '', 'filter', [_('List')]) }}
+  {{ build_breadcrumb(_('Boss Secretaries Filters'), '', 'filter', [_('List')]) }}
 {% endblock %}
 
 {% block content %}
   <section class="content">
-    {% call build_list_containers(_('BS Filters'), 'filter') %}
+    {% call build_list_containers(_('Boss Secretaries Filters'), 'filter') %}
       {% call build_list_table() %}
         {% call build_list_table_headers(get=url_for('.CallFilterView:get', id=''), delete=url_for('.CallFilterView:delete', id='')) %}
           <th>{{ _('Name') }}</th>
           <th>{{ _('Ring Strategy') }}</th>
-          <th>{{ _('Recipient') }}</th>
-          <th>{{ _('Surrogates') }}</th>
+          <th>{{ _('Boss') }}</th>
+          <th>{{ _('Secretaries') }}</th>
         {% endcall %}
         {% call(callfilter) build_list_table_rows(resource_list['items']) %}
           <td>{{ callfilter.name }}</td>
