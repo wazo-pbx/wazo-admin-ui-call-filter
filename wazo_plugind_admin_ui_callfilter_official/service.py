@@ -10,9 +10,8 @@ class CallFilterService(BaseConfdService):
 
     def create(self, resource):
         callfilter_id = super().create(resource)['id']
-        self.update_user_recipients(callfilter_id, resource['recipients_user'])
-        confd.call_filters(resource['id']).update_user_recipients(resource['recipients_user'])
-        confd.call_filters(resource['id']).update_user_surrogates(resource['surrogates_user'])
+        confd.call_filters(callfilter_id).update_user_recipients(resource['recipients_user'])
+        confd.call_filters(callfilter_id).update_user_surrogates(resource['surrogates_user'])
 
     def update(self, resource):
         super().update(resource)
