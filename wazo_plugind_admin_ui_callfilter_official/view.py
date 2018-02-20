@@ -153,7 +153,7 @@ class CallFilterListingUserSurrogatesView(LoginRequiredView):
         for user in users['items']:
             text = '{}{}{}'.format(
                 user['firstname'],
-                ' {}'.format(user['firstname']) if user['lastname'] else '',
+                ' {}'.format(user['lastname']) if user['lastname'] else '',
                 ' ({}{})'.format(bsfilter_extension, user['id']) if bsfilter_extension else '',
             )
 
