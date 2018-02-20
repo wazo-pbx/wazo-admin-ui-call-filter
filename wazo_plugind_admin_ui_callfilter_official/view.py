@@ -140,7 +140,7 @@ class CallFilterListingView(LoginRequiredView):
         return jsonify(build_select2_response(results, callfilters['total'], params))
 
 
-class CallFilterListingSurrogatesView(LoginRequiredView):
+class CallFilterListingUserSurrogatesView(LoginRequiredView):
 
     def list_json(self):
         params = extract_select2_params(request.args)
