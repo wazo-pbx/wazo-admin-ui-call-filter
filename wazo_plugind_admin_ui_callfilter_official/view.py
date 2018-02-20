@@ -78,31 +78,67 @@ class CallFilterView(BaseView):
     def _populate_form(self, form):
         sounds = self.service.list_sound()
         form.fallbacks.form.noanswer_destination.choices = self._build_set_choices_sound(sounds)
-        form.surrogates_user.user_uuids.choices = self._build_set_choices_surrogates_user(form.surrogates_user.users)
-        form.recipients_user.uuid.choices = self._build_set_choices_recipients_users([form.recipients_user])
+        form.surrogates_user.user_uuids.choices = self._build_set_choices_surrogates_user(form.surrogates_user)
+        form.recipients_user.uuid.choices = self._build_set_choices_recipient_users([form.recipients_user])
         return form
 
-    def _build_set_choices_recipients_users(self, users):
+    def _build_set_choices_recipient_users(self, users):
         results = []
         for user in users:
-            if user.lastname.data:
-                text = '{} {}'.format(user.firstname.data, user.lastname.data)
+            if user.firstname.data and user.lastname.data:
+                text = '{}{}'.format(
+                    user.firstname.data,
+                    ' {}'.format(user.lastname.data) if user.lastname.data else ''
+                )
+            elif user.uuid.data:
+                user_data = self.service.get_user_by_uuid(user.uuid.data)
+                text = '{}{}'.format(
+                    user_data['firstname'],
+                    ' {}'.format(user_data['lastname']) if user_data['lastname'] else ''
+                )
             else:
-                text = user.firstname.data
+                continue
             results.append((user.uuid.data, text))
         return results
 
-    def _build_set_choices_surrogates_user(self, users):
+    def _build_set_choices_surrogates_user(self, surrogates_user):
         extension_features_bsfilter = self.service.get_extensions_features_by_type('bsfilter')
         bsfilter_extension = None
         if extension_features_bsfilter:
             bsfilter_extension = extension_features_bsfilter['exten'][1:-1]
+
+        if (len(surrogates_user.users) == 1 and
+                not surrogates_user.users[0]['uuid'].data and
+                surrogates_user.user_uuids.data):
+            return self._build_set_choices_surrogates_user_by_user_uuids(
+                surrogates_user.user_uuids.data,
+                bsfilter_extension
+            )
+        else:
+            return self._build_set_choices_surrogates_user_by_users(
+                surrogates_user.users,
+                bsfilter_extension
+            )
+
+    def _build_set_choices_surrogates_user_by_user_uuids(self, user_uuids, bsfilter_extension=None):
+        results = []
+        for user_uuid in user_uuids:
+            user_data = self.service.get_user_by_uuid(user_uuid)
+            text = '{}{}{}'.format(
+                user_data['firstname'],
+                ' {}'.format(user_data['lastname']) if user_data['lastname'] else '',
+                ' ({}{})'.format(bsfilter_extension, user_data['id']) if bsfilter_extension else ''
+            )
+            results.append((user_uuid, text))
+        return results
+
+    def _build_set_choices_surrogates_user_by_users(self, users, bsfilter_extension=None):
         results = []
         for user in users:
             text = '{}{}{}'.format(
                 user.firstname.data,
                 ' {}'.format(user.lastname.data) if user.lastname.data else '',
-                ' ({}{})'.format(bsfilter_extension, user['id'].data) if bsfilter_extension else '',
+                ' ({}{})'.format(bsfilter_extension, user['id'].data) if bsfilter_extension else ''
             )
             results.append((user.uuid.data, text))
         return results
