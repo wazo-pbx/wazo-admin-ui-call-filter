@@ -12,9 +12,9 @@ from wtforms.fields import (
     SelectMultipleField,
     FieldList
 )
-from wtforms.validators import InputRequired, NumberRange
+from wtforms.validators import InputRequired
 
-from wazo_admin_ui.helpers.destination import DestinationField, DestinationHiddenField
+from wazo_admin_ui.helpers.destination import DestinationField
 from wazo_admin_ui.helpers.form import BaseForm, SelectField
 
 bs_strategy_map = {
@@ -73,11 +73,3 @@ class CallFilterForm(BaseForm):
     description = StringField(l_('Description'))
     enabled = BooleanField(l_('Enabled'))
     submit = SubmitField(l_('Submit'))
-
-
-class CallFilterDestinationForm(BaseForm):
-    set_value_template = '{callfilter_name}'
-
-    callfilter_id = SelectField(l_('CallFilter'), [InputRequired()], choices=[])
-    callfilter_name = DestinationHiddenField()
-    ring_time = IntegerField(l_('Ring Time'), [NumberRange(min=0)])

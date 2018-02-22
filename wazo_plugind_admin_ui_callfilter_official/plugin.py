@@ -4,9 +4,8 @@
 from flask_menu.classy import register_flaskview
 
 from wazo_admin_ui.helpers.plugin import create_blueprint
-from wazo_admin_ui.helpers.destination import register_listing_url, register_destination_form
+from wazo_admin_ui.helpers.destination import register_listing_url
 
-from .form import CallFilterDestinationForm
 from .service import CallFilterService
 from .view import CallFilterView, CallFilterListingView, CallFilterListingUserSurrogatesView
 
@@ -27,8 +26,6 @@ class Plugin(object):
 
         CallFilterListingUserSurrogatesView.service = CallFilterService()
         CallFilterListingUserSurrogatesView.register(callfilter, route_base='/callfilters_listing_surrogates')
-
-        register_destination_form('callfilter', 'CallFilter', CallFilterDestinationForm)
 
         register_listing_url('callfilter', 'callfilter.CallFilterListingView:list_json')
         register_listing_url('user_surrogates', 'callfilter.CallFilterListingUserSurrogatesView:list_json')
