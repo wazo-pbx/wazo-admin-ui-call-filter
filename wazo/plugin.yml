@@ -2,8 +2,8 @@ name: admin-ui-call-filter
 namespace: official
 version: 1.0.0-1
 author: Wazo Team
-display_name: Callfilters
-min_wazo_version: 18.02
+display_name: BS Filters
+min_wazo_version: 18.03
 tags:
-  - callfilter
+  - BS Filter
 homepage: https://github.com/wazo-pbx/wazo-admin-ui-call-filter

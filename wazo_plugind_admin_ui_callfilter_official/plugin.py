@@ -1,7 +1,13 @@
 # Copyright 2018 The Wazo Authors  (see the AUTHORS file)
 # SPDX-License-Identifier: GPL-3.0+
 
+from flask_menu.classy import register_flaskview
+
 from wazo_admin_ui.helpers.plugin import create_blueprint
+from wazo_admin_ui.helpers.destination import register_listing_url
+
+from .service import CallFilterService
+from .view import CallFilterView, CallFilterListingView, CallFilterListingUserSurrogatesView
 
 callfilter = create_blueprint('callfilter', __name__)
 
@@ -10,5 +16,18 @@ class Plugin(object):
 
     def load(self, dependencies):
         core = dependencies['flask']
+
+        CallFilterView.service = CallFilterService()
+        CallFilterView.register(callfilter, route_base='/callfilters')
+        register_flaskview(callfilter, CallFilterView)
+
+        CallFilterListingView.service = CallFilterService()
+        CallFilterListingView.register(callfilter, route_base='/callfilters_listing')
+
+        CallFilterListingUserSurrogatesView.service = CallFilterService()
+        CallFilterListingUserSurrogatesView.register(callfilter, route_base='/callfilters_listing_surrogates')
+
+        register_listing_url('callfilter', 'callfilter.CallFilterListingView:list_json')
+        register_listing_url('user_surrogates', 'callfilter.CallFilterListingUserSurrogatesView:list_json')
 
         core.register_blueprint(callfilter)
