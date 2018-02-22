@@ -6,7 +6,7 @@ from setuptools import find_packages
 from setuptools import setup
 
 setup(
-    name='wazo_admin_ui_callfilter',
+    name='wazo_admin_ui_call_filter',
     version='0.1',
 
     description='Wazo Admin UI Callfilter',
@@ -22,7 +22,7 @@ setup(
 
     entry_points={
         'wazo_admin_ui.plugins': [
-            'callfilter = wazo_plugind_admin_ui_callfilter_official.plugin:Plugin',
+            'call_filter = wazo_plugind_admin_ui_call_filter_official.plugin:Plugin',
         ]
     }
 )

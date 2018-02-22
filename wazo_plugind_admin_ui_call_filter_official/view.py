@@ -21,7 +21,7 @@ from .form import CallFilterForm, bs_strategy_map
 
 class CallFilterView(BaseView):
     form = CallFilterForm
-    resource = 'callfilter'
+    resource = 'call_filter'
 
     @classy_menu_item('.callfilters', l_('BS Filters'), order=8, icon='filter')
     def index(self, form=None):

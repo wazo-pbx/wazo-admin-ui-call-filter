@@ -8,7 +8,7 @@ case "$1" in
         ;;
 
     package)
-        tar xvf dist/wazo_admin_ui_callfilter-*.tar.gz -C ${pkgdir}
+        tar xvf dist/wazo_admin_ui_call_filter-*.tar.gz -C ${pkgdir}
         cp -R etc ${pkgdir}/
         ;;
 
@@ -17,7 +17,7 @@ case "$1" in
         ;;
 
     uninstall)
-        rm -f /etc/wazo-admin-ui/conf.d/50-wazo-plugin-callfilter.yml
+        rm -f /etc/wazo-admin-ui/conf.d/50-wazo-plugin-call-filter.yml
         systemctl restart wazo-admin-ui
         ;;
 
