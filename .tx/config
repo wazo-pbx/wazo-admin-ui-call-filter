@@ -1,0 +1,8 @@
+[main]
+host = https://www.transifex.com
+
+[wazo.wazo-admin-ui-call-filter]
+file_filter = wazo_plugind_admin_ui_call_filter_official/translations/<lang>/LC_MESSAGES/messages.po
+source_file = wazo_plugind_admin_ui_call_filter_official/translations/messages.pot
+source_lang = en
+type = PO
