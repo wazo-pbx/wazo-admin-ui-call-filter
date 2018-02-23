@@ -9,7 +9,7 @@ from wazo_admin_ui.helpers.destination import register_listing_url
 from .service import CallFilterService
 from .view import CallFilterView, CallFilterListingView, CallFilterListingUserSurrogatesView
 
-callfilter = create_blueprint('callfilter', __name__)
+call_filter = create_blueprint('call_filter', __name__)
 
 
 class Plugin(object):
@@ -18,16 +18,16 @@ class Plugin(object):
         core = dependencies['flask']
 
         CallFilterView.service = CallFilterService()
-        CallFilterView.register(callfilter, route_base='/callfilters')
-        register_flaskview(callfilter, CallFilterView)
+        CallFilterView.register(call_filter, route_base='/callfilters')
+        register_flaskview(call_filter, CallFilterView)
 
         CallFilterListingView.service = CallFilterService()
-        CallFilterListingView.register(callfilter, route_base='/callfilters_listing')
+        CallFilterListingView.register(call_filter, route_base='/callfilters_listing')
 
         CallFilterListingUserSurrogatesView.service = CallFilterService()
-        CallFilterListingUserSurrogatesView.register(callfilter, route_base='/callfilters_listing_surrogates')
+        CallFilterListingUserSurrogatesView.register(call_filter, route_base='/callfilters_listing_surrogates')
 
-        register_listing_url('callfilter', 'callfilter.CallFilterListingView:list_json')
-        register_listing_url('user_surrogates', 'callfilter.CallFilterListingUserSurrogatesView:list_json')
+        register_listing_url('call_filter', 'call_filter.CallFilterListingView:list_json')
+        register_listing_url('user_surrogates', 'call_filter.CallFilterListingUserSurrogatesView:list_json')
 
-        core.register_blueprint(callfilter)
+        core.register_blueprint(call_filter)
