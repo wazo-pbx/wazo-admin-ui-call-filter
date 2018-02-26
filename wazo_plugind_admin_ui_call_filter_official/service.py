@@ -35,11 +35,11 @@ class CallFilterService(BaseConfdService):
                             return file_, format_
         return None, None
 
-    def get_extensions_features_by_type(self, extension_feature_type):
-        extensions_features = confd.extensions_features.list()['items']
-        for extension_feature in extensions_features:
-            if extension_feature['feature'] == extension_feature_type:
-                return extension_feature
+    def get_bsfilter_extension(self):
+        extensions = confd.extensions_features.list(feature='bsfilter')['items']
+        for extension in extensions:
+            return extension
+        return None
 
     def list_user(self, **kwargs):
         return confd.users.list(**kwargs)
