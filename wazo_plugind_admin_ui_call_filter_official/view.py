@@ -104,38 +104,35 @@ class CallFilterView(BaseView):
     def _build_set_choices_surrogates_user(self, surrogates_user):
         bsfilter_extension = self.service.get_bsfilter_extension()
         bsfilter_exten = bsfilter_extension['exten'][1:-1] if bsfilter_extension else None
-        if (len(surrogates_user.users) == 1 and
-                not surrogates_user.users[0]['uuid'].data and
-                surrogates_user.user_uuids.data):
+        if surrogates_user.user_uuids.data and not surrogates_user.users[0]['uuid'].data:
             return self._build_set_choices_surrogates_user_by_user_uuids(
                 surrogates_user.user_uuids.data,
                 bsfilter_exten
             )
-        else:
-            return self._build_set_choices_surrogates_user_by_users(
-                surrogates_user.users,
-                bsfilter_exten,
-            )
+        return self._build_set_choices_surrogates_user_by_users(
+            surrogates_user.users,
+            bsfilter_exten,
+        )
 
-    def _build_set_choices_surrogates_user_by_user_uuids(self, user_uuids, bsfilter_extension=None):
+    def _build_set_choices_surrogates_user_by_user_uuids(self, user_uuids, bsfilter_exten=None):
         results = []
         for user_uuid in user_uuids:
             user_data = self.service.get_user_by_uuid(user_uuid)
             text = '{}{}{}'.format(
                 user_data['firstname'],
                 ' {}'.format(user_data['lastname']) if user_data['lastname'] else '',
-                ' ({}{})'.format(bsfilter_extension, user_data['id']) if bsfilter_extension else ''
+                ' ({}{})'.format(bsfilter_exten, user_data['id']) if bsfilter_exten else ''
             )
             results.append((user_uuid, text))
         return results
 
-    def _build_set_choices_surrogates_user_by_users(self, users, bsfilter_extension=None):
+    def _build_set_choices_surrogates_user_by_users(self, users, bsfilter_exten=None):
         results = []
         for user in users:
             text = '{}{}{}'.format(
                 user.firstname.data,
                 ' {}'.format(user.lastname.data) if user.lastname.data else '',
-                ' ({}{})'.format(bsfilter_extension, user['id'].data) if bsfilter_extension else ''
+                ' ({}{})'.format(bsfilter_exten, user['id'].data) if bsfilter_exten else ''
             )
             results.append((user.uuid.data, text))
         return results
