@@ -25,7 +25,10 @@ class CallFilterView(BaseView):
     resource = 'call_filter'
 
     @classy_menu_item('.callfilters', l_('BS Filters'), order=8, icon='filter')
-    def index(self, form=None):
+    def index(self):
+        super().index()
+
+    def _index(self, form=None):
         try:
             resource_list = self.service.list()
         except HTTPError as error:
