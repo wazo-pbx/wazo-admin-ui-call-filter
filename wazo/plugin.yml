@@ -4,6 +4,8 @@ version: 1.0.2-1
 author: Wazo Team
 display_name: BS Filters
 min_wazo_version: 18.03
+debian_depends:
+  - xivo-lib-python-python3
 tags:
   - BS Filter
 homepage: https://github.com/wazo-pbx/wazo-admin-ui-call-filter

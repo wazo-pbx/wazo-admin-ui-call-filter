@@ -12,6 +12,7 @@ from flask_babel import lazy_gettext as l_
 from flask_menu.classy import classy_menu_item
 from requests.exceptions import HTTPError
 
+from xivo.xivo_helpers import clean_extension
 from wazo_admin_ui.helpers.classful import BaseView, LoginRequiredView
 from wazo_admin_ui.helpers.classful import extract_select2_params, build_select2_response
 from wazo_admin_ui.helpers.destination import listing_urls
@@ -103,7 +104,7 @@ class CallFilterView(BaseView):
 
     def _build_set_choices_surrogates_user(self, surrogates_user):
         bsfilter_extension = self.service.get_bsfilter_extension()
-        bsfilter_exten = bsfilter_extension['exten'][1:-1] if bsfilter_extension else None
+        bsfilter_exten = clean_extension(bsfilter_extension['exten'])
         if surrogates_user.user_uuids.data and not surrogates_user.users[0]['uuid'].data:
             return self._build_set_choices_surrogates_user_by_user_uuids(
                 surrogates_user.user_uuids.data,
@@ -176,7 +177,7 @@ class CallFilterListingUserSurrogatesView(LoginRequiredView):
         params = extract_select2_params(request.args)
         users = self.service.list_user(**params)
         bsfilter_extension = self.service.get_bsfilter_extension()
-        bsfilter_exten = bsfilter_extension['exten'][1:-1] if bsfilter_extension else None
+        bsfilter_exten = clean_extension(bsfilter_extension['exten'])
 
         results = []
         for user in users['items']:
