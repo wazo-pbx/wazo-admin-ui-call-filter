@@ -12,7 +12,7 @@ from flask_babel import lazy_gettext as l_
 from flask_menu.classy import classy_menu_item
 from requests.exceptions import HTTPError
 
-from xivo.xivo_helpers import clean_extension
+from wazo_admin_ui.helpers.extension import clean_extension
 from wazo_admin_ui.helpers.classful import BaseView, LoginRequiredView
 from wazo_admin_ui.helpers.classful import extract_select2_params, build_select2_response
 from wazo_admin_ui.helpers.destination import listing_urls
