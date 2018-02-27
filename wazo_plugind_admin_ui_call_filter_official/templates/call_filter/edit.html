@@ -33,7 +33,6 @@
           {% endcall %}
 
           {% call build_tab_content_item('no_answer') %}
-            {{ build_add_row_entry_header() }}
             {% call add_default_fields(form=form, submit_value=_('Update')) %}
               {{ render_field(form.fallbacks, with_label=False) }}
             {% endcall %}
