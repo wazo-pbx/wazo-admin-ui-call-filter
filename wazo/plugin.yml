@@ -7,3 +7,4 @@ min_wazo_version: 18.03
 tags:
   - BS Filter
 homepage: https://github.com/wazo-pbx/wazo-admin-ui-call-filter
+icon: filter
