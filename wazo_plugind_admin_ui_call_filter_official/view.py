@@ -26,7 +26,7 @@ class CallFilterView(BaseView):
 
     @classy_menu_item('.callfilters', l_('BS Filters'), order=8, icon='filter')
     def index(self):
-        super().index()
+        return super().index()
 
     def _index(self, form=None):
         try:
